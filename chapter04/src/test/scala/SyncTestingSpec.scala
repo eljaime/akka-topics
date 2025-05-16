@@ -19,16 +19,16 @@ import scala.concurrent.duration.DurationInt
 
 class SyncTestingSpec extends AnyWordSpec with Matchers {
 
-  "Typed actor synchronous testing" must {
+  "When performing sync testing, an actor" must {
 
-    "spawning takes place" in {
+    "only add effects if it has spawned a worker" in {
       val testKit = BehaviorTestKit(SimplifiedManager())
       testKit.expectEffect(NoEffects)
       testKit.run(SimplifiedManager.CreateChild("adan"))
       testKit.expectEffect(Spawned(SimplifiedWorker(), "adan"))
     }
 
-    "actor gets forwarded message from manager" in {
+    "get forwarded a message from a manager" in {
       val testKit = BehaviorTestKit(SimplifiedManager())
       val probe = TestInbox[String]()
       testKit.run(
@@ -44,7 +44,7 @@ class SyncTestingSpec extends AnyWordSpec with Matchers {
         CapturedLogEvent(Level.INFO, "it's done"))
     }
 
-    "failing to schedule a message. BehaviorTestKit can't deal with scheduling" in {
+    "fail to schedule a message since BehaviorTestKit can't deal with scheduling" in {
       intercept[TestFailedException] {
         val testKit = BehaviorTestKit(SimplifiedManager())
         testKit.run(SimplifiedManager.ScheduleLog)

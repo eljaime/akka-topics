@@ -4,7 +4,7 @@ val AkkaManagementVersion = "1.1.0"
 
 version := "0.1.0-SNAPSHOT"
 
-scalaVersion := "2.13.1"
+scalaVersion := "2.13.11"
 libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-cluster-typed" % AkkaVersion,
   "com.typesafe.akka" %% "akka-discovery" % AkkaVersion,

@@ -13,15 +13,26 @@ object Main extends App {
 
   implicit val system = ActorSystem(Behaviors.empty, "runner")
   system
-  var fakeDB: List[Int] = List()
-  def storeDB(value: Int) =
+  var fakeDB: List[String] = List()
+  def storeDB(value: String) =
     fakeDB = fakeDB :+ value
+  var deadLetterDB: List[String] = List()
+  def deadLetterDB(value: String) =
+    deadLetterDB = deadLetterDB :+ value
 
-  val producer: Source[Int, NotUsed] = Source(List(1, 2, 3))
-  val processor: Flow[Int, Int, NotUsed] =
-    Flow[Int].filter(_ % 2 == 0)
-  val consumer: Sink[Int, Future[Done]] =
+  val producer: Source[String, NotUsed] = Source(List("uno","dos","tres", "cuatro", "cinco", "seis"))
+  
+  val processor: Flow[String, String, NotUsed] =
+    Flow[String].filter(_ contains "o")
+  
+  val consumer: Sink[String, Future[Done]] =
     Sink.foreach(i => storeDB(i))
+
+  val consumer: Sink[String, Future[Done]] =
+    Sink.foreach(i => storeDB(i))
+
+  val deadLetters: Sink[String, Future[Done]] =
+    Sink.foreach(i => deadLetterDB(i))
 
   val blueprint: RunnableGraph[scala.concurrent.Future[akka.Done]] =
     producer.via(processor).toMat(consumer)(Keep.right)
@@ -29,7 +40,7 @@ object Main extends App {
   val future: Future[Done] = blueprint.run()
 
   future.onComplete { result =>
-    println(fakeDB)
+    fakeDB.foreach(i => println("Matches o " + i))
     system.terminate
   }(system.executionContext)
 }

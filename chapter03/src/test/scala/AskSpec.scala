@@ -11,7 +11,7 @@ class AskSpec
   import simplequestion.Manager
 
   "the message on dead letters" should {
-    "be referrencing to the sender of the ask" in {
+    "be referencing to the sender of the ask" in {
 
       val manager = spawn(Manager(), "manager-1")
       manager ! Manager.Delegate(

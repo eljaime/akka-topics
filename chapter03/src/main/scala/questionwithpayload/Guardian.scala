@@ -11,7 +11,16 @@ object Guardian {
       val manager: ActorRef[Manager.Command] =
         context.spawn(Manager(), "manager-1")
       Behaviors.receiveMessage { message =>
-        manager ! Manager.Delegate(List("text-a", "text-b", "text-c"))
+        manager ! Manager.Delegate(
+          List(
+            Request(
+              "0001",
+              "Greetings from Spain",
+              "Hola $firstName, como estas"),
+            Request(
+              "0002",
+              "Greetings from UK",
+              "Tally-ho $firstName, how do you do")))
         Behaviors.same
       }
     }

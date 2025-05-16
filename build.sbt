@@ -1,6 +1,6 @@
 val AkkaVersion = "2.6.20"
 val LogbackVersion = "1.2.3"
-val ScalaVersion = "2.13.9"
+val ScalaVersion = "2.13.11"
 val AkkaManagementVersion = "1.1.4"
 val AkkaProjectionVersion = "1.2.2"
 val ScalikeJdbcVersion = "3.5.0"
